@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous"/>
+  
+    <title>CRUD Application Using Vue.js, PHP & MYSQLi</title>
+    <style type="text/css">
+        
+    </style>
+</head>
+<body>
+   <div id="app">
+       <div class="container-fluid">
+           <div class="row bg-dark">
+               <div class="col-lg-12">
+                   <p class="text-center text-light display-4 pt-2" style="font-size: 25px;"> CRUD Application Using Vue.js, PHP & MYSQLi</p>
+               </div>
+           </div>
+       </div>
+
+       <div class="container">
+           <div class="row mt-3">
+               <div class="col-lg-6">
+                   <h3 class="text-success">Registered users</h3>
+               </div>
+               <div class="col-lg-6">
+                   <button class="btn btn-success float-end" data-bs-toggle="modal" data-bs-target="#overlay"
+                   @click="showAddModal=true">
+                       <i class="fas fa-user"></i>&nbsp;&nbsp;Add New User
+                   </button>
+               </div>
+           </div>
+           <hr class="bg-success">
+           <div class="alert alert-danger" v-if="errorMsg">
+               Error Message
+           </div>
+           <div class="alert alert-success" v-if="successMsg">
+            Success Message
+           </div>
+
+           <!-- Displaying records -->
+           <div class="row">
+               <div class="col-lg-12">
+                   <table class="table table-border table-stripped">
+                       <thead>
+                           <tr class="text-center bg-success text-light">
+                               <th>ID</th>
+                               <th>Name</th>
+                               <th>Email</th>
+                               <th>Phone</th>
+                               <th>Edit</th>
+                               <th>Delete</th>
+                           </tr>
+                       </thead>
+                       <tbody>
+                        <tr class="text-center">
+                            <td>1</td>
+                            <td>Pratyay</td>
+                            <td>Email</td>
+                            <td>9876543210</td>
+                            <td><a href="#" class="text-success"  data-bs-toggle="modal" data-bs-target="#showEditModal" @click="showEditModal=true"><i class="fas fa-edit"></i></a></td>
+                            <td><a href="#" class="text-danger"  data-bs-toggle="modal" data-bs-target="#showDeleteModal" @click="showDeleteModal=true"><i class="fas fa-trash-alt"></i></a></td>
+                        </tr>
+                       </tbody>
+                   </table>
+               </div>
+           </div>
+            
+        </div>
+
+       </div>        
+        <!-- Add new user modal -->
+        <div class="modal fade" id="overlay" tabindex="-1" aria-labelledby="overlay" aria-hidden="true"  v-if="showAddModal">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title text-success" id="exampleModalLabel">Add New user</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="showAddModal=false"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="#" method="post">
+                        <div class="form-group mb-1">
+                        <input type="text" name="name" class="form-control form-control-lg" placeholder="Name">
+                        </div>
+                        <div class="form-group mb-1">
+                        <input type="email" name="email" class="form-control form-control-lg" placeholder="E-Mail">
+                        </div>
+                        <div class="form-group mb-1">
+                            <input type="tel" name="phone" class="form-control form-control-lg" placeholder="phone">
+                        </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="showAddModal=false">Close</button>
+                <button type="button" class="btn btn-success" @click="showAddModal=false">Save changes</button>
+                </div>
+            </div>
+            </div>
+        </div>
+       <!-- Add new user modal end -->
+       <!-- edit user modal -->
+       <div class="modal fade" id="showEditModal" tabindex="-1" aria-labelledby="showEditModal" aria-hidden="true"  v-if="showEditModal">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title text-success" id="exampleModalLabel">Edit user</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="showEditModal=false"></button>
+            </div>
+            <div class="modal-body">
+                <form action="#" method="post">
+                    <div class="form-group mb-1">
+                    <input type="text" name="name" class="form-control form-control-lg" placeholder="Name">
+                    </div>
+                    <div class="form-group mb-1">
+                    <input type="email" name="email" class="form-control form-control-lg" placeholder="E-Mail">
+                    </div>
+                    <div class="form-group mb-1">
+                        <input type="tel" name="phone" class="form-control form-control-lg" placeholder="phone">
+                    </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="showEditModal=false">Close</button>
+            <button type="button" class="btn btn-success" @click="showEditModal=false">Edit changes</button>
+            </div>
+        </div>
+        </div>
+    </div>
+   <!-- edit user modal end -->
+   <!-- delete user modal -->
+   <div class="modal fade" id="showDeleteModal" tabindex="-1" aria-labelledby="showDeleteModal" aria-hidden="true"  v-if="showDeleteModal">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title text-success" id="exampleModalLabel">Delete user</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="showDeleteModal=false"></button>
+        </div>
+        <div class="modal-body">
+            <h5 class="text-danger">Are you sure you want to delete this use?</h5>
+            <form action="#" method="post">
+                <div class="form-group mb-1">
+                <input type="text" name="name" class="form-control form-control-lg" placeholder="Name">
+                </div>
+                <div class="form-group mb-1">
+                <input type="email" name="email" class="form-control form-control-lg" placeholder="E-Mail">
+                </div>
+                <div class="form-group mb-1">
+                    <input type="tel" name="phone" class="form-control form-control-lg" placeholder="phone">
+                </div>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="showDeleteModal=false">Close</button>
+        <button type="button" class="btn btn-danger" @click="showDeleteModal=false">Delete changes</button>
+        </div>
+    </div>
+    </div>
+</div>
+<!-- edit user modal end -->
+       
+       
+   </div>
+   <!-- bootstrap -->
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+   
+   <!-- Vuejs -->
+   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+   <!-- BootstrapVue js -->
+   <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
+   <!-- Axios -->
+   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+   <script src="main.js">
+   </script>
+   
+</body>
+</html>
